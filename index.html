@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OpenDroid — Clean, Fast, Open Android</title>
+  <meta name="description" content="An open, privacy‑respecting Android experience. Download builds, read news, and join the community." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2300bfa5'/%3E%3Ccircle cx='22' cy='32' r='6' fill='%23fff'/%3E%3Ccircle cx='42' cy='32' r='6' fill='%23fff'/%3E%3C/ svg%3E" />
+  <style>
+    :root{
+      --bg: #0b1013;
+      --panel: #0f1519;
+      --panel-2: #0b1115;
+      --text: #e7f2ee;
+      --muted: #9fb4ad;
+      --brand: #00bfa5; /* teal */
+      --brand-2: #2ce0cc;
+      --line: rgba(255,255,255,.08);
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 70% -10%, rgba(0,191,165,.12), transparent 60%),
+                  radial-gradient(800px 400px at -10% 10%, rgba(44,224,204,.12), transparent 50%),
+                  var(--bg);
+      color: var(--text);
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+    .container{width:min(1100px, 92vw); margin:0 auto}
+    .pill{display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .75rem; border:1px solid var(--line); border-radius:999px; background:linear-gradient( to bottom, rgba(255,255,255,.03), rgba(255,255,255,.00)); color:var(--muted); font-size:.85rem}
+    .btn{display:inline-flex; align-items:center; gap:.5rem; padding:.9rem 1.1rem; border-radius:12px; border:1px solid var(--line); background:linear-gradient( to bottom, rgba(255,255,255,.06), rgba(255,255,255,.02)); color:var(--text); font-weight:600; box-shadow: var(--shadow); transition: transform .1s ease, border-color .2s ease}
+    .btn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.18)}
+    .btn.brand{background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#052724; border:none}
+    .btn.ghost{background: transparent}
+    .badge{font-size:.78rem; color:var(--muted)}
+    header{
+      position: sticky; top:0; z-index: 50; backdrop-filter: saturate(140%) blur(10px);
+      background: linear-gradient(to bottom, rgba(11,16,19,.85), rgba(11,16,19,.55)); border-bottom:1px solid var(--line)
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
+    .brand{display:flex; align-items:center; gap:.75rem; font-weight:800; letter-spacing:.3px}
+    .logo{width:38px; height:38px; display:grid; place-items:center; border-radius:999px; background: radial-gradient(circle at 30% 20%, var(--brand-2), var(--brand)); box-shadow: inset 0 -6px 20px rgba(0,0,0,.35)}
+    .logo svg{width:22px; height:22px}
+    .nav a.link{padding:.6rem .8rem; color:var(--muted)}
+    .nav .actions{display:flex; align-items:center; gap:.5rem}
+    .hamb{display:none}
+
+    /* Hero */
+    .hero{padding: 6rem 0 4rem; position:relative}
+    .headline{font-weight:900; font-size: clamp(2rem, 4.6vw, 3.5rem); line-height:1.08; margin: .6rem 0 1rem}
+    .sub{color:var(--muted); font-size: clamp(1.02rem, 1.2vw, 1.1rem)}
+    .cta{display:flex; flex-wrap: wrap; gap:.8rem; margin-top:1.4rem}
+    .hero-visual{position:relative; isolation:isolate}
+    .glass{border:1px solid var(--line); background: linear-gradient( to bottom right, rgba(255,255,255,.08), rgba(255,255,255,.03)); border-radius: var(--radius); box-shadow: var(--shadow)}
+
+    .hero-grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:2rem; align-items:center}
+
+    .device-card{padding:1rem; display:grid; grid-template-columns: 96px 1fr; gap:1rem; align-items:center}
+    .device-card img{width:96px; height:96px; object-fit:cover; border-radius:12px; border:1px solid var(--line)}
+
+    /* Features */
+    .section{padding: 3.5rem 0}
+    .section h2{font-size: clamp(1.6rem, 3.2vw, 2.2rem); margin:0 0 .6rem}
+    .grid{display:grid; gap:1rem}
+    .grid.cols-3{grid-template-columns: repeat(3, 1fr)}
+    .grid.cols-2{grid-template-columns: repeat(2, 1fr)}
+    .card{border:1px solid var(--line); background: linear-gradient( to bottom, var(--panel), var(--panel-2)); border-radius: var(--radius); padding:1.2rem}
+    .card h3{margin:.2rem 0 .4rem}
+    .card p{color:var(--muted); margin:0}
+    .icon{width:24px; height:24px; opacity:.9}
+
+    /* Devices */
+    .toolbar{display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin-bottom:1rem}
+    .toolbar input, .toolbar select{
+      background: var(--panel-2); color: var(--text); border:1px solid var(--line); border-radius:10px; padding:.65rem .8rem; outline:none
+    }
+    .devices{display:grid; grid-template-columns: repeat(4, 1fr); gap:1rem}
+    .device{border:1px solid var(--line); background: linear-gradient( to bottom, rgba(255,255,255,.04), rgba(255,255,255,.02)); border-radius: 14px; padding:1rem; transition: transform .1s ease}
+    .device:hover{transform: translateY(-2px)}
+    .device .title{font-weight:700}
+    .device .meta{color:var(--muted); font-size:.9rem}
+
+    /* News */
+    .news{display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem}
+    .news .post{overflow:hidden}
+    .post .cover{height:140px; border-radius:12px; border:1px solid var(--line); background:linear-gradient(135deg, rgba(0,191,165,.22), rgba(44,224,204,.12));}
+
+    /* Footer */
+    footer{border-top:1px solid var(--line); padding:2.5rem 0; color:var(--muted)}
+
+    /* Mobile */
+    @media (max-width: 980px){
+      .nav .links{display:none}
+      .hamb{display:block}
+      .hero-grid{grid-template-columns: 1fr;}
+      .devices{grid-template-columns: repeat(2, 1fr)}
+      .news{grid-template-columns: 1fr 1fr}
+      .grid.cols-3{grid-template-columns: 1fr 1fr}
+      .device-card{grid-template-columns: 72px 1fr}
+    }
+    @media (max-width: 620px){
+      .devices{grid-template-columns: 1fr}
+      .news{grid-template-columns: 1fr}
+      .grid.cols-3{grid-template-columns: 1fr}
+      .grid.cols-2{grid-template-columns: 1fr}
+    }
+  </style>
+</head>
+<body>
+  <!-- Header / Nav -->
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#">
+        <span class="logo" aria-hidden="true">
+          <!-- Minimal link‑ring logo -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" stroke="#052724" stroke-width="2"/>
+            <circle cx="9" cy="12" r="2.6" fill="#052724"/>
+            <circle cx="15" cy="12" r="2.6" fill="#052724"/>
+          </svg>
+        </span>
+        <span>OpenDroid</span>
+      </a>
+      <nav class="links">
+        <a class="link" href="#features">Features</a>
+        <a class="link" href="#devices">Devices</a>
+        <a class="link" href="#news">News</a>
+        <a class="link" href="#community">Community</a>
+        <a class="link" href="#download">Download</a>
+      </nav>
+      <div class="actions">
+        <a class="btn ghost" href="#docs">Docs</a>
+        <a class="btn brand" href="#download">Download</a>
+        <button class="hamb btn ghost" id="menuBtn" aria-label="Open menu">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="pill">Open • Privacy‑respecting • Community built</span>
+        <h1 class="headline">Clean, fast Android — without the bloat.</h1>
+        <p class="sub">OpenDroid is an open, secure Android experience focused on performance and longevity. Keep your device fast, fresh, and yours.</p>
+        <div class="cta">
+          <a class="btn brand" href="#download">Download builds</a>
+          <a class="btn" href="#devices">Check supported devices</a>
+        </div>
+        <div class="cta">
+          <span class="badge">Latest release: 2025‑08‑01 · Android 14L</span>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="glass device-card">
+          <img alt="Phone mock" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Crect width='160' height='160' rx='16' ry='16' fill='%230a1317'/%3E%3Crect x='20' y='16' width='120' height='128' rx='14' fill='%23131f26' stroke='%231c2a32'/%3E%3Crect x='44' y='34' width='72' height='8' rx='4' fill='%2300bfa5'/%3E%3Crect x='34' y='54' width='92' height='8' rx='4' fill='%232ce0cc'/%3E%3Crect x='34' y='74' width='92' height='8' rx='4' fill='%231f9f8b'/%3E%3Crect x='34' y='94' width='92' height='8' rx='4' fill='%2300bfa5'/%3E%3C/svg%3E"/>
+          <div>
+            <div class="pill" style="margin-bottom:.4rem">Featured device</div>
+            <h3 style="margin:.2rem 0">Galaxy A5 (2017)</h3>
+            <p class="badge">Codename: a5y17lte • Maintained</p>
+            <div class="cta">
+              <a class="btn brand" href="#download">Get build</a>
+              <a class="btn ghost" href="#docs">Install guide</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature cards -->
+  <section id="features" class="section">
+    <div class="container">
+      <h2>Why OpenDroid?</h2>
+      <p class="sub" style="margin-bottom:1rem">A thoughtful Android base with privacy‑first defaults and useful extras you actually want.</p>
+      <div class="grid cols-3">
+        <div class="card">
+          <div class="pill" style="width:max-content">Privacy</div>
+          <h3>Respect by default</h3>
+          <p>Zero bloat. Granular permissions. Clear toggles for analytics and network features, off by default.</p>
+        </div>
+        <div class="card">
+          <div class="pill" style="width:max-content">Longevity</div>
+          <h3>Security updates</h3>
+          <p>Monthly patches and backports keep your device secure long after OEM support ends.</p>
+        </div>
+        <div class="card">
+          <div class="pill" style="width:max-content">Performance</div>
+          <h3>Smooth where it matters</h3>
+          <p>Tuned schedulers and memory policies for responsiveness without sacrificing battery life.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Devices -->
+  <section id="devices" class="section">
+    <div class="container">
+      <h2>Supported devices</h2>
+      <div class="toolbar">
+        <input id="search" placeholder="Search model or codename…" />
+        <select id="status">
+          <option value="">All statuses</option>
+          <option value="Maintained">Maintained</option>
+          <option value="Community">Community</option>
+          <option value="Deprecated">Deprecated</option>
+        </select>
+      </div>
+      <div class="devices" id="deviceGrid"></div>
+      <div class="cta" style="margin-top:1rem">
+        <a class="btn" href="#docs">How to add your device</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- News -->
+  <section id="news" class="section">
+    <div class="container">
+      <h2>News & updates</h2>
+      <div class="news" id="newsGrid"></div>
+    </div>
+  </section>
+
+  <!-- Community / CTA -->
+  <section id="community" class="section">
+    <div class="container grid cols-2">
+      <div class="card">
+        <h3>Join the community</h3>
+        <p class="sub" style="margin:.4rem 0 1rem">Get help, contribute code, or maintain a device. We welcome first‑time contributors!</p>
+        <div class="cta">
+          <a class="btn brand" href="#">Chat on Matrix</a>
+          <a class="btn" href="#">GitHub</a>
+          <a class="btn" href="#">Contribute guide</a>
+        </div>
+      </div>
+      <div class="card" id="download">
+        <h3>Download builds</h3>
+        <p class="sub" style="margin:.4rem 0 1rem">Grab the latest stable or nightly build for your device. Verified checksums and mirrors included.</p>
+        <div class="cta">
+          <a class="btn brand" href="#">Browse stable</a>
+          <a class="btn" href="#">Nightlies</a>
+          <a class="btn ghost" href="#">Verifying downloads</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container" style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap">
+      <div>
+        <div class="brand"><span class="logo"></span><span>OpenDroid</span></div>
+        <p class="badge">© <span id="year"></span> OpenDroid Project. Built with love by volunteers.</p>
+      </div>
+      <div class="badge" style="display:flex; gap:1rem">
+        <a href="#">Security</a>
+        <a href="#">Legal</a>
+        <a href="#">Press</a>
+        <a href="#">Donate</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Simple data to make the page feel alive. Replace with your JSON later.
+    const devices = [
+      { brand: 'Samsung', name: 'Galaxy A5 (2017)', code: 'a5y17lte', status: 'Maintained' },
+      { brand: 'Google', name: 'Pixel 4a', code: 'sunfish', status: 'Maintained' },
+      { brand: 'Xiaomi', name: 'Redmi Note 7', code: 'lavender', status: 'Community' },
+      { brand: 'OnePlus', name: 'OnePlus 6', code: 'enchilada', status: 'Community' },
+      { brand: 'Motorola', name: 'Moto G7', code: 'river', status: 'Deprecated' },
+      { brand: 'Sony', name: 'Xperia XZ2', code: 'akari', status: 'Maintained' },
+      { brand: 'Asus', name: 'Zenfone 8', code: 'sake', status: 'Maintained' },
+      { brand: 'Poco', name: 'Poco F1', code: 'beryllium', status: 'Community' },
+    ];
+
+    const news = [
+      { title: 'OpenDroid 14L Release', date: '2025‑08‑01', excerpt: 'Our 14L release brings improved performance, a new camera stack, and monthly security patches.', url: '#' },
+      { title: 'Maintainer call: Snapdragon 845', date: '2025‑07‑12', excerpt: 'We are looking for maintainers for several Snapdragon 845 devices. Apply inside.', url: '#' },
+      { title: 'WireGuard baked in', date: '2025‑06‑28', excerpt: 'WireGuard is now part of our kernel configs across maintained devices.', url: '#' },
+    ];
+
+    // Populate devices
+    const grid = document.getElementById('deviceGrid');
+    const renderDevices = () => {
+      const q = document.getElementById('search').value.toLowerCase();
+      const s = document.getElementById('status').value;
+      grid.innerHTML = '';
+      devices
+        .filter(d => (!s || d.status === s))
+        .filter(d => !q || `${d.brand} ${d.name} ${d.code}`.toLowerCase().includes(q))
+        .forEach(d => {
+          const el = document.createElement('div');
+          el.className = 'device';
+          el.innerHTML = `
+            <div class="title">${d.brand} • ${d.name}</div>
+            <div class="meta">Codename: ${d.code} · ${d.status}</div>
+            <div class="cta" style="margin-top:.8rem">
+              <a class="btn brand" href="#">Download</a>
+              <a class="btn ghost" href="#">Install</a>
+            </div>`;
+          grid.appendChild(el);
+        });
+    }
+
+    // Populate news
+    const newsGrid = document.getElementById('newsGrid');
+    news.forEach(post => {
+      const card = document.createElement('a');
+      card.href = post.url;
+      card.className = 'card post';
+      card.innerHTML = `
+        <div class='cover'></div>
+        <div style='padding:.9rem'>
+          <div class='badge'>${post.date}</div>
+          <h3 style='margin:.2rem 0 .4rem'>${post.title}</h3>
+          <p class='badge'>${post.excerpt}</p>
+        </div>`;
+      newsGrid.appendChild(card);
+    });
+
+    // Filters
+    document.getElementById('search').addEventListener('input', renderDevices);
+    document.getElementById('status').addEventListener('change', renderDevices);
+    renderDevices();
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Simple mobile menu (toggle links visibility)
+    const menuBtn = document.getElementById('menuBtn');
+    const header = document.querySelector('header');
+    menuBtn && menuBtn.addEventListener('click', () => {
+      const links = header.querySelector('.links');
+      if(!links) return;
+      const isOpen = getComputedStyle(links).display !== 'none';
+      links.style.display = isOpen ? 'none' : 'flex';
+      links.style.flexWrap = 'wrap';
+      links.style.gap = '.2rem';
+    });
+  </script>
+</body>
+</html>
