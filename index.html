@@ -4,42 +4,25 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AxonOS — Clean, Fast, Open Android</title>
-  <meta name="description" content="An open, privacy‑respecting Android experience. Download builds, read news, and join the community." />
   <style>
-    :root{
-      --bg: #0b1013;
-      --panel: #0f1519;
-      --panel-2: #0b1115;
-      --text: #e7f2ee;
-      --muted: #9fb4ad;
-      --brand: #00bfa5;
-      --brand-2: #2ce0cc;
-      --line: rgba(255,255,255,.08);
-      --shadow: 0 10px 30px rgba(0,0,0,.45);
-      --radius: 16px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:sans-serif;background:var(--bg);color:var(--text)}
-    a{color:inherit;text-decoration:none}
+    body{margin:0;font-family:sans-serif;background:#0b1013;color:#e7f2ee}
+    header{background:#0f1519;position:sticky;top:0;border-bottom:1px solid rgba(255,255,255,.08)}
     .container{width:min(1100px,92vw);margin:0 auto}
-    header{background:#0f1519;position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line)}
     .nav{display:flex;align-items:center;justify-content:space-between;padding:.8rem 0}
-    .brand{display:flex;align-items:center;gap:.75rem;font-weight:800}
-    .nav a{padding:.6rem .8rem;color:var(--muted)}
-    .btn{padding:.6rem 1rem;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--text);margin:.2rem;display:inline-block}
-    .btn.brand{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#052724;border:none}
-    .hero{padding:4rem 0;text-align:center}
+    .brand{font-weight:800}
+    .nav a{padding:.6rem .8rem;color:#9fb4ad;text-decoration:none}
+    .hero{text-align:center;padding:4rem 0}
     .headline{font-size:2.5rem;font-weight:900}
-    .sub{color:var(--muted)}
-    .section{padding:2rem 0}
-    footer{border-top:1px solid var(--line);padding:2rem 0;color:var(--muted);text-align:center}
+    .sub{color:#9fb4ad}
+    .btn{padding:.6rem 1rem;border-radius:12px;background:linear-gradient(135deg,#00bfa5,#2ce0cc);color:#052724;border:none;text-decoration:none}
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:2rem 0;text-align:center;color:#9fb4ad}
   </style>
 </head>
 <body>
   <header>
     <div class="container nav">
       <div class="brand">AxonOS</div>
-      <nav class="links">
+      <nav>
         <a href="index.html">Home</a>
         <a href="devices.html">Devices</a>
         <a href="wheresmydevice.html">Where’s my device?</a>
@@ -51,68 +34,14 @@
     <div class="container">
       <h1 class="headline">AxonOS</h1>
       <p class="sub">Clean, fast Android — without the bloat.</p>
-      <a class="btn brand" href="devices.html">See supported devices</a>
+      <a class="btn" href="devices.html">See supported devices</a>
     </div>
   </section>
 
   <footer>
-    <div class="container">© <span id="year"></span> AxonOS Project</div>
+    © <span id="year"></span> AxonOS Project
   </footer>
 
   <script>document.getElementById('year').textContent=new Date().getFullYear();</script>
-</body>
-</html>
-
-<!-- devices.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AxonOS Devices</title>
-  <style>
-    body{margin:0;font-family:sans-serif;background:#0b1013;color:#e7f2ee}
-    .container{width:min(900px,92vw);margin:2rem auto}
-    a{color:#00bfa5;text-decoration:none}
-    .device{border:1px solid rgba(255,255,255,.08);background:#0f1519;border-radius:12px;padding:1rem;margin:.6rem 0}
-    .device .title{font-weight:700}
-    .btn{padding:.4rem .8rem;border-radius:10px;border:1px solid rgba(255,255,255,.08);background:#0f1519;color:#e7f2ee;display:inline-block;margin-top:.6rem}
-    .btn.brand{background:linear-gradient(135deg,#00bfa5,#2ce0cc);color:#052724;border:none}
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Supported Devices</h1>
-    <div class="device">
-      <div class="title">Samsung Galaxy A5 (2017)</div>
-      <div class="meta">Codename: a5y17lte • Maintained</div>
-      <a class="btn brand" href="#">Download</a>
-    </div>
-    <div class="device">
-      <div class="title">Samsung Galaxy A7 (2017)</div>
-      <div class="meta">Codename: a7y17lte • Maintained</div>
-      <a class="btn brand" href="#">Download</a>
-    </div>
-  </div>
-</body>
-</html>
-
-<!-- wheresmydevice.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Where's my device? - AxonOS</title>
-  <style>
-    body{margin:0;font-family:sans-serif;background:#0b1013;color:#e7f2ee;display:flex;align-items:center;justify-content:center;height:100vh;text-align:center;padding:1rem}
-    a{color:#00bfa5}
-  </style>
-</head>
-<body>
-  <div>
-    <h1>Where's my device?</h1>
-    <p>If your device isn’t listed, you can request support in our <a href="https://discord.gg/Fzj9fT7jMh">Discord server</a>.</p>
-  </div>
 </body>
 </html>
